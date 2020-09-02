@@ -1,0 +1,53 @@
+$footer-height: 6vh;
+$header-height: 11vh;
+$main-height: 83vh;
+$base-blue: #0099cc;
+
+a {
+    text-decoration: none;
+}
+
+header {
+    background-color: #000;
+    color: #ffffff;
+    padding: 15px;
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    height: $header-height;
+}
+
+footer {
+    background-color: $base-blue;
+    color: #ffffff;
+    text-align: center;
+    font-size: 12px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: $footer-height;
+    padding-top: 10px;
+}
+
+select {
+    padding: 5px;
+}
+
+main {
+    margin-top: $header-height;
+    margin-bottom: $footer-height;
+    height: $main-height;
+    overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: $base-blue; 
+}
+
+// ::-webkit-scrollbar-track {
+    // box-shadow: inset 0 0 5px $base-blue; 
+// }

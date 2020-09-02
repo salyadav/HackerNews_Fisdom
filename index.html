@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <title>Fisdom</title>
+</head>
+<body>
+    <div id="root">
+        <header>
+            <h1>Hacker News</h1>
+        </header>
+        <main>
+            <div class='row'>
+                <section class='col-10' id='search-sort'>
+                    <div class='search'>
+                        <i class="fa fa-search"></i>
+                        <input id='search' placeholder='title...' disabled></input>
+                    </div>
+                    <div class='sort'>
+                        <label for='sortlist'>Sort by: </label>
+                        <select id='sortlist'>
+                            <option value='time'>Time</option>
+                            <option value='score'>Score</option>
+                            <option value='title'>Title</option>
+                        </select>
+                        <img id='sort-direction' class='sort-icon asc' data-order="asc"/>
+                    </div>
+                </section>
+                <section class='col-2' id='news-menu'>
+                    <nav class='menu'>
+                        <ul data-selected="TopStoriesStore">
+                            <li class='selected'>Top stories</li>
+                            <li>New stories</li>
+                            <li>Best stories</li>
+                        </ul>
+                    </nav>
+                </section>
+                <section id='news-cards' class='col-8 news'>
+                    <!-- insert cards -->
+                    <!-- loading icon until cards inserted -->
+                </section>
+                <section id='pagination' class='col-10 pagination'>
+                    <!-- <div class='page'>1</div> -->
+                </section>
+            </div>
+        </main>
+        <div id='pagination'>
+            <!-- <div class='page'>1</div> -->
+        </div>
+        <footer>
+            Developed by Saloni. API from <a href="https://github.com/HackerNews/API">HackerNews</a>
+        </footer>
+    </div>
+    <script>
+        //prefixes to support crossbrowser
+        window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || 
+        window.msIndexedDB;
+
+        window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || 
+        window.msIDBTransaction;
+        window.IDBKeyRange = window.IDBKeyRange || 
+        window.webkitIDBKeyRange || window.msIDBKeyRange;
+    </script>
+    <script src="./src/index.js"></script>
+</body>
+</html>
