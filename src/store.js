@@ -16,10 +16,9 @@ export const getStories = function(url, store) {
     .then(data => {
         max_page_size = Math.floor(data.length/Constants.PER_PAGE);
         View.addPaginationEl(1, Math.min(max_page_size, 5));
-        _getAllNewsItem(data)
-        .then(res => {
-            _storeAllToDB(res, store);
-        });
+        return _getAllNewsItem(data);
+    }).then(res => {
+        _storeAllToDB(res, store);
     });
 }
 
@@ -46,21 +45,24 @@ const _getAllNewsItem = function(list) {
 }
 
 const _storeAllToDB = function(list, store) {
-    let db, tx;
+    let db, tx, objectStore;
     const request = window.indexedDB.open(Constants.IDB.STORIES_DB, 1); //creating a new db for each type of news
     request.onerror = () => console.log("db request erroe");
     request.onsuccess = event => {
         db = request.result;
-        tx = db.transaction([store], "readwrite");
-        const objectStore = tx.objectStore(store);
-        for (let i in list) {
-            objectStore.add(list[i]);
-        }
+        if(db.objectStoreNames.contains(store)) {
+            tx = db.transaction([store], "readwrite");
+            objectStore = tx.objectStore(store);
+            for (let i in list) {
+                objectStore.add(list[i]);
+            }            
+            tx.oncomplete = () => {
+                db.close();
+            }
 
-        View.enableSearch();
-
-        tx.oncomplete = () => {
-            db.close();
+            View.enableSearch();
+        } else {
+            objectStore = db.createObjectStore(store, {keyPath: "id"});
         }
     };
     request.onupgradeneeded = event => {
@@ -94,23 +96,36 @@ export const readAllFromDB = function(store, offset=0, fromIndex=false, index, r
     let count = Constants.PER_PAGE;
     request.onsuccess = () => {
         db = request.result;
-        const tx = db.transaction([store], "readonly");
-        objectStore = tx.objectStore(store);
-        if (fromIndex) {
-            objectStore = objectStore.index(index); 
-        }
-
-        objectStore.getAll().onsuccess = event => {
-            const arr = event.target.result;
-            let start, end;
-            if(!reverse) {
-                start = count*offset;
-                end = start+count;
-                View.updateNews(arr.slice(start, end));
-            } else {
-                start = arr.length-count*(offset+1);
-                end = start+count;
-                View.updateNews(arr.slice(start, end));
+        if(db.objectStoreNames.contains(store)) {
+            const tx = db.transaction([store], "readonly");
+            objectStore = tx.objectStore(store);
+            if (fromIndex) {
+                objectStore = objectStore.index(index); 
+            }
+    
+            objectStore.getAll().onsuccess = event => {
+                const arr = event.target.result;
+                let start, end;
+                if(!reverse) {
+                    start = count*offset;
+                    end = start+count;
+                    View.updateNews(arr.slice(start, end));
+                } else {
+                    start = arr.length-count*(offset+1);
+                    end = start+count;
+                    View.updateNews(arr.slice(start, end));
+                }
+            }
+        } else {
+            switch (store) {
+                case Constants.STORE.BEST_STORIES_STORE:
+                    getStories(Constants.URL.BEST_STORIES_URL, store);
+                    break;
+                case Constants.STORE.NEW_STORIES_STORE:
+                    getStories(Constants.URL.NEW_STORIES_URL, store);
+                    break;
+                case Constants.STORE.TOP_STORIES_STORE:
+                    getStories(Constants.URL.TOP_STORIES_URL, store);
             }
         }
     }

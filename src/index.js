@@ -88,3 +88,15 @@ const _sortList = function(sortBy, order) {
     const reverse = order === "asc" ? false : true;
     readAllFromDB(store, +page-1, true, sortBy, reverse);
 }
+
+const onNewsMenuChange = function(e) {
+    const store = e.target.dataset.story;
+    if (!store) return;
+    e.target.parentNode.setAttribute('data-selected', store);
+    document.querySelector('li[class~="selected"]')?.classList.remove("selected");
+    e.target.classList.add("selected");
+
+    searchInIDB();
+}
+
+document.querySelector('ul').onclick = onNewsMenuChange;
