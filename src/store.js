@@ -1,6 +1,6 @@
 // import { createCard, addPaginationEl, updateNews } from './view';
-import Constants from './Constants';
-import View from './view';
+import Constants from './Constants.js';
+import View from './view.js';
 
 let max_page_size;
 (() => {

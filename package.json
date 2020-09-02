@@ -14,8 +14,5 @@
     "cssnano": "^4.1.10",
     "parcel-bundler": "^1.12.4",
     "sass": "^1.26.10"
-  },
-  "dependencies": {
-    "parcel": "^1.12.4"
   }
 }

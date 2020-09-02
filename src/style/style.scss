@@ -1,8 +1,6 @@
 @import "./common.scss";
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&display=swap');
 
-$base-blue: #0099cc;
-
 * {
     box-sizing: border-box;
     margin: auto;
@@ -24,28 +22,32 @@ body {
     display: table;
 }
 
-.menu ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.menu li {
-    padding: 10px;
-    margin-bottom: 10px;
-    background-color: $base-blue;
-    color: #fff;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    transition-duration: 0.2s;
-
-    &:hover {
-        background-color: #007399;
-        cursor: pointer;
-        box-shadow: 0 6px 12px rgba(0,0,0,0.12), 0 6px 12px rgba(0,0,0,0.24);
+.menu {
+    ul {
+        list-style-type: none;
+        padding: 0;
     }
-}
+    
+    li {
+        padding: 10px;
+        margin-bottom: 10px;
+        background-color: $base-blue;
+        color: #fff;
+        box-shadow: $box-shadow;
+        transition-duration: 0.2s;
+    
+        &:hover {
+            background-color: #007399;
+            cursor: pointer;
+            box-shadow: $box-shadow-highlighted;
+        }
+    }
 
-.selected {
-    background-color: #007399;
+    li.selected {
+        background-color: #007399;
+        box-shadow: $box-shadow-highlighted;
+        font-weight: 600;
+    }
 }
 
 .news {
@@ -58,11 +60,11 @@ body {
     margin: 10px;
     border-radius: 10px;
     padding: 25px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    box-shadow: $box-shadow;
     transition-duration: 0.2s;
 
     &:hover {
-        box-shadow: 0 6px 12px rgba(0,0,0,0.12), 0 6px 12px rgba(0,0,0,0.24);
+        box-shadow: $box-shadow-highlighted;
     }
 
     a {
@@ -106,20 +108,9 @@ body {
     background-size: contain;
     height: 15px;
     width: 15px;
-    background-color: #ccc;
-    background-repeat: no-repeat;
     margin: 0 0 0 10px;
-    padding: 12px;
     cursor: pointer;
     vertical-align: middle;
-}
-
-.asc {
-    background-image: url('../assets/up-arrow.svg');
-}
-
-.desc {
-    background-image: url('../assets/down-arrow.svg');
 }
 
 #search-sort {
@@ -158,6 +149,7 @@ body {
 }
 
 .sort {
+    display: inline-flex;
     select {
         height: 40px;
         border: 3px solid $base-blue;
@@ -165,7 +157,6 @@ body {
         width: 30vw;
         outline: none;
     }
-    
 }
 
 /* For desktop */

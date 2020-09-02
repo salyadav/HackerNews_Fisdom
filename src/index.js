@@ -1,10 +1,12 @@
 
 import './style/style.scss';
-import { getStories, readAllFromDB, searchInDB, getMaxPageSize } from './store';
-import Constants from './Constants';
+import { getStories, readAllFromDB, searchInDB, getMaxPageSize } from './store.js';
+import Constants from './Constants.js';
 
 // top
-getStories("https://hacker-news.firebaseio.com/v0/topstories.json", Constants.STORE.TOP_STORIES_STORE);
+(function() {
+    getStories(Constants.URL.TOP_STORIES_URL, Constants.STORE.TOP_STORIES_STORE);
+})();
 // new
 // getStories("https://hacker-news.firebaseio.com/v0/newstories.json", Constants.STORE.NEW_STORIES_STORE);
 // best
@@ -18,6 +20,7 @@ const searchInIDB = function() {
     searchInDB(store, searchString);
 }
 
+//DEBOUCING SEARCH FOR 800ms PAUSE
 document.getElementById('search').oninput = (function(callback, limit) {
     let timer = null;
     return () => {
@@ -29,20 +32,6 @@ document.getElementById('search').oninput = (function(callback, limit) {
 const pageChange = function(e) {
     let page = e.target.innerText;
     const pageList = document.getElementsByClassName('page');
-    // switch (page) {
-    //     case "<<":
-    //         if(+pageList[1]===1) return;
-    //         page = +pageList[1].innerText-5;
-    //         if(isNaN(page) || page<1) 
-    //             page = 1;
-    //         break;
-    //     case ">>":
-    //         if(+pageList[pageList.length-2]===getMaxPageSize()) return;
-    //         page = +pageList[pageList.length-2].innerText+1;
-    //         if (isNaN(page) || page>getMaxPageSize()) 
-    //             page = getMaxPageSize();
-    //         break;
-    // }
     if(page==="<<") {
         if(+pageList[1]===1) return;
         page = +pageList[1].innerText-5;
@@ -67,19 +56,20 @@ document.getElementById('pagination').onclick = pageChange;
 
 const onSortOrderChange = function(e) {
     const target = e.target;
-    const order = target.dataset.order;
+    const dataTarget = document.getElementById('sort-direction');
+    const order = dataTarget.dataset.order;
     const sortBy = document.getElementById('sortlist').value;
 
     if(order === 'asc') {
-        target.classList.add('desc');
-        target.classList.remove('asc');
-        target.setAttribute('data-order', 'desc');
+        target.classList.remove('fa-arrow-up');
+        target.classList.add('fa-arrow-down');
+        dataTarget.setAttribute('data-order', 'desc');
     } else {
-        target.classList.add('asc');
-        target.classList.remove('desc');
-        target.setAttribute('data-order', 'asc');
+        target.classList.remove('fa-arrow-down');
+        target.classList.add('fa-arrow-up');
+        dataTarget.setAttribute('data-order', 'asc');
     }
-    _sortList(sortBy, target.dataset.order);
+    _sortList(sortBy, dataTarget.dataset.order);
 }
 
 document.getElementById('sort-direction').onclick = onSortOrderChange;
@@ -98,4 +88,3 @@ const _sortList = function(sortBy, order) {
     const reverse = order === "asc" ? false : true;
     readAllFromDB(store, +page-1, true, sortBy, reverse);
 }
-//first time. on scroll to bottom, increase offset by some number

@@ -25,7 +25,10 @@
                             <option value='score'>Score</option>
                             <option value='title'>Title</option>
                         </select>
-                        <img id='sort-direction' class='sort-icon asc' data-order="asc"/>
+                        <!-- <img id='sort-direction' class='sort-icon asc' data-order="asc"/> -->
+                        <div id='sort-direction' class='sort-icon' data-order="asc">
+                            <i class="fa fa-arrow-up"></i>
+                        </div>
                     </div>
                 </section>
                 <section class='col-2' id='news-menu'>
@@ -54,6 +57,8 @@
         </footer>
     </div>
     <script>
+        //https://twitter.com/dfkaye/status/1044693110700171264 - Parcel issue with modules
+        var parcelRequire;
         //prefixes to support crossbrowser
         window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || 
         window.msIndexedDB;
